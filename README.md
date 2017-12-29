@@ -16,6 +16,8 @@ python3 emotateur.py
 
 ## Documents
 
+- [Cahier de charge](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Cahier%20de%20charge.md) 
+
 ## Membre d'équipe
 
 - SUN Yunyun
