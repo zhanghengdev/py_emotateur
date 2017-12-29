@@ -18,7 +18,7 @@ def run():
     delay = {True: 0, False: 1}
     faceBB = [150, 80, 300, 300]
 
-    img_reference = cv2.imread('img/2.jpg')
+    img_reference = cv2.imread('img/test2.jpg')
     res_reference = cv2.resize(img_reference,(frame.shape[1],frame.shape[0]), interpolation = cv2.INTER_CUBIC)
     res_reference, face_key_points_reference = fc.get_face_key_points(res_reference, faceBB)
     cv2.imshow("img", res_reference)
@@ -34,6 +34,8 @@ def run():
             break
 
         res, face_key_points = fc.get_face_key_points(frame, faceBB)
+        cv2.putText(res, 'Press \'q\' to stop.', (20, 20), 0, 0.5, (0, 0, 255))
+        cv2.putText(res, 'Press \'p\' to pause.', (20, 40), 0, 0.5, (0, 0, 255))
         cv2.imshow("OpenPose result", res)
 
         #print('face_key_points={}'.format(face_key_points))
