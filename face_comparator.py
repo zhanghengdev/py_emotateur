@@ -15,6 +15,9 @@ class face_comparator:
         self.outSize = outSize
         self.op = OP.OpenPose((656, 368), (240, 240), tuple(self.outSize), "COCO", OPENPOSE_ROOT + os.sep + "models" + os.sep, 0,
                          download_heatmaps, OP.OpenPose.ScaleMode.ZeroToOne, with_face, with_hands)
+        self.last_distance_0 = 0
+        self.last_distance_1 = 0
+        self.last_distance_2 = 0
 
     def get_face_key_points(self, img, faceBB):
         rgb = img[:, :self.outSize[0]]
@@ -53,35 +56,38 @@ class face_comparator:
         face_key_points_2_center_aligned = np.transpose(np.dot(T, np.transpose(face_key_points_2[center_index, :])))
         vectors_2 = face_key_points_2_signature_aligned[:,:2]-face_key_points_2_center_aligned[:2]
 
+
+        # Gauss filter
+        gauss_filter = [7/74, 26/74, 41/74]
+
         # Euclidean distance
-        euclidean_distance = 0
-        for i in range(len(signature_indexes)):
+        #euclidean_distance = 0
+        #for i in range(len(signature_indexes)):
             #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
-            euclidean_distance += distance.euclidean(vectors_1[i, :], vectors_2[i, :])
+        #    euclidean_distance += distance.euclidean(vectors_1[i, :], vectors_2[i, :])
 
         # squared Euclidean distance
         squared_euclidean_distance = 0
         for i in range(len(signature_indexes)):
             #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
             squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :])/10)**2
+        self.last_distance_2 = self.last_distance_1
+        self.last_distance_1 = self.last_distance_0
+        self.last_distance_0 = squared_euclidean_distance
+        squared_euclidean_distance = np.dot(gauss_filter, [self.last_distance_2, self.last_distance_1, self.last_distance_0])
 
         # cos distance
-        cos_distance = 0
-        for i in range(len(signature_indexes)):
-            cos_distance += distance.cosine(vectors_1[i, :], vectors_2[i, :])
+        #cos_distance = 0
+        #for i in range(len(signature_indexes)):
+        #    cos_distance += distance.cosine(vectors_1[i, :], vectors_2[i, :])
 
         # squared cos distance
-        squared_cos_distance = 0
-        for i in range(len(signature_indexes)):
-            squared_cos_distance += (distance.cosine(vectors_1[i, :], vectors_2[i, :])/10)**2
+        #squared_cos_distance = 0
+        #for i in range(len(signature_indexes)):
+        #    squared_cos_distance += (distance.cosine(vectors_1[i, :], vectors_2[i, :])/10)**2
 
         # total distance
         #total_distance = l2_distance + cos_distance*1000
-        total_distance = 0
+        total_distance = squared_euclidean_distance
 
-        print('*********')
-        print('euclidean_distance={}'.format(euclidean_distance))
-        print('squared_euclidean_distance={}'.format(squared_euclidean_distance))
-        print('cos_distance={}'.format(cos_distance))
-        print('squared_cos_distance={}'.format(squared_cos_distance))
         return total_distance

@@ -24,7 +24,7 @@ def run():
     cv2.imshow("img", res_reference)
 
     while True:
-        #start_time = time.time()
+        start_time = time.time()
         try:
             ret, frame = cap.read()
             frame = cv2.flip( frame, 1 )
@@ -50,10 +50,9 @@ def run():
         if key & 255 == ord('r'):
             faceBB = initFaceBB
 
-        #actual_fps = 1.0 / (time.time() - start_time)
-        #print('actual_fps={}'.format(actual_fps))
-
-        fc.compare_face(face_key_points_reference, face_key_points)
+        actual_fps = 1.0 / (time.time() - start_time)
+        distance = fc.compare_face(face_key_points_reference, face_key_points)
+        print('fps: %8.2f, distance:%8.2f \r' % (actual_fps, distance), end='')
 
 
 if __name__ == '__main__':
