@@ -31,7 +31,8 @@ class face_comparator:
         face_key_points_1[:, 2] = 1
         face_key_points_2[:, 2] = 1
         # alignement
-        location_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 27, 28, 29, 30]
+        location_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                                27, 28, 29, 30]
         I = np.transpose(face_key_points_2[location_indexes, :])
         I_p = np.transpose(face_key_points_1[location_indexes, :])
         T = np.dot(I_p, pinv(I))
@@ -58,10 +59,21 @@ class face_comparator:
             #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
             euclidean_distance += distance.euclidean(vectors_1[i, :], vectors_2[i, :])
 
+        # squared Euclidean distance
+        squared_euclidean_distance = 0
+        for i in range(len(signature_indexes)):
+            #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
+            squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :])/10)**2
+
         # cos distance
         cos_distance = 0
         for i in range(len(signature_indexes)):
             cos_distance += distance.cosine(vectors_1[i, :], vectors_2[i, :])
+
+        # squared cos distance
+        squared_cos_distance = 0
+        for i in range(len(signature_indexes)):
+            squared_cos_distance += (distance.cosine(vectors_1[i, :], vectors_2[i, :])/10)**2
 
         # total distance
         #total_distance = l2_distance + cos_distance*1000
@@ -69,5 +81,7 @@ class face_comparator:
 
         print('*********')
         print('euclidean_distance={}'.format(euclidean_distance))
+        print('squared_euclidean_distance={}'.format(squared_euclidean_distance))
         print('cos_distance={}'.format(cos_distance))
+        print('squared_cos_distance={}'.format(squared_cos_distance))
         return total_distance
