@@ -47,9 +47,6 @@ def run():
         if key & 255 == ord('q'):
             break
 
-        if key & 255 == ord('r'):
-            faceBB = initFaceBB
-
         actual_fps = 1.0 / (time.time() - start_time)
         distance = fc.compare_face(face_key_points_reference, face_key_points)
         print('fps: %8.2f, distance:%8.2f \r' % (actual_fps, distance), end='')
