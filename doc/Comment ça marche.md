@@ -126,7 +126,7 @@ for i in range(len(signature_indexes)):
 $$ y=x^2 \ \ si\  x \leq thresh $$
 $$ y=x \ \ si \ x > thresh $$
 
-# Filtage gaussienne
+### Filtage gaussienne
 
 Utiliser une filtre gaussienne à rendre la résultat plus stable:
 
