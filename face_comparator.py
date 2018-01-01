@@ -28,6 +28,7 @@ class face_comparator:
         return res, face_key_points
 
     def compare_face(self, face_key_points_1, face_key_points_2):
+        # check if most part of the face is detected
         score = np.mean(face_key_points_2[:, 2])
         if score < 0.5:
             return 0
@@ -47,7 +48,7 @@ class face_comparator:
                                 42, 43, 44, 45, 46, 47,                         # right eye
                                 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, # outside mouth
                                 60, 61, 62, 63, 64, 65, 66, 67,                 # inside mouth
-                                68, 69]                                         # eyes
+                                68, 69]                                         # pupil
         center_index = 30
         # vectors_1
         vectors_1 = face_key_points_1[signature_indexes, :2] - face_key_points_1[center_index, :2]

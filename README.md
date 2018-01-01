@@ -6,8 +6,7 @@ We want to create a fun application, in which users can imitate facial expressio
 
 ## Steps
 
-- Install [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose);
-- Install [PyOpenPose](https://github.com/FORTH-ModelBasedTracker/PyOpenPose);
+- Install [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) & [PyOpenPose](https://github.com/FORTH-ModelBasedTracker/PyOpenPose);
 - Modify the variable `faceBB` in file `emotateur.py` according to your model image.
 - Activate the application:
 ```bash
@@ -16,9 +15,10 @@ python3 emotateur.py
 
 ## Documents
 
-- [Cahier de charge](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Cahier%20de%20charge.md) 
+- [Cahier de charge](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Cahier%20de%20charge.md)
+- [Comment ça marche](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Comment%20ça%20marche.md)
 
-## Membre d'équipe
+## Team members
 
 - SUN Yunyun
 - XU Sixiang
