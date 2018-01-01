@@ -113,7 +113,7 @@ Après pluseurs essais, la premiere marche un peu mieux.
 ### Utiliser la somme de la distance carré
 
 Pour négliger l'impact de bruits et la difference  d‘apparence des visages, on va effectuer une fonction:
-$$ y=x^2 $$
+$$y=x^2$$
 
 ```python
 # squared Euclidean distance
@@ -123,8 +123,8 @@ for i in range(len(signature_indexes)):
 ```
 
 **Remarque**, peut-etre la fonction soft l1 est mieux:
-$$ y=x^2 \ \ si\  x \leq thresh $$
-$$ y=x \ \ si \ x > thresh $$
+$$y=x^2 \ \ si\  x \leq thresh$$
+$$y=|x| \ \ si \ x > thresh$$
 
 ### Filtage gaussienne
 
