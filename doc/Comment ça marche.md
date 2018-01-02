@@ -2,9 +2,9 @@
 
 ## Détection des points d'interets des visages
 
-Détection des points d'intérêts sur la visage de référence et la visage d’utilisateur avec la bibliothèque openpose. La sortie de cette partie est une matrice de numpy pour chaque visage sous la forme(70*3):
+Détection des points d'intérêts sur la visage de référence et la visage d’utilisateur avec la bibliothèque openpose. La sortie de cette partie est une matrice de numpy pour chaque visage de la forme(70*3):
 
-|   | la coordonnee de x  |  la coordonnee de y  | la probabilité de chaque point |
+|   | la coordonnée de x  |  la coordonnée de y  | la probabilité de chaque point |
 |---|---|---|---|
 | point 0 |   |   |   |
 | point 1 |   |   |   |
@@ -21,7 +21,7 @@ On va nommer la matrice des points d'interets du visage référence `face_key_po
 ## Vérification de détection
 
 Si la moyenne de ces probabilités du visage d'utilisateur est inférieur à 0.5, on va quiter la fonction.
-Sinon on met les probabiliés 1.
+Sinon on va remettre les probabiliés à 1.
 
 ```python
 # check if most part of the face is detected
@@ -43,7 +43,7 @@ location_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
 ```
 1. groupe 2: `signature_indexes`
 ```python
-signature_indexes = [17, 18, 19, 20, 21,                                # left eye brow
+signature_indexes = [17, 18, 19, 20, 21,						# left eye brow
                 22, 23, 24, 25, 26,                             # right eye brow
                 36, 37, 38, 39, 40, 41,                         # left eye
                 42, 43, 44, 45, 46, 47,                         # right eye
@@ -63,14 +63,14 @@ I_p = np.transpose(face_key_points_1[location_indexes, :])
 T = np.dot(I_p, pinv(I))
 ```
 
-Après effectuer la transformation `T` aux points d’utilisateur `face_key_points_2`, **les deux visages auront la même position, échellee et angle.**
+Après effectuer la transformation `T` aux points d’utilisateur `face_key_points_2`, **les deux visages auront la même position, taille, échellee et angle.**
 
 ## Comparasion
 
 ### Matrice de signature
 
-Pour chaque visage, on va construire une matrice de signature avec** les vecteurs de la point de référence (30: pointe du nez) à tous les points de groupe `signature_indexes`.**
-**Attention: avant de calculer la matrice de signature d'utilisateur, faire l'alignement du visage avant! (Ça veut dire effectuer la translation T)**
+Pour chaque visage, on va construire une matrice de signature avec **les vecteurs de la point de référence (30: pointe du nez) à tous les points de groupe `signature_indexes`.**
+**Attention**: avant de calculer la matrice de signature d'utilisateur, faire l'alignement du visage avant! (Ça veut dire effectuer la translation T)
 
 ```python
 # vectors
@@ -113,6 +113,7 @@ Après pluseurs essais, la premiere marche un peu mieux.
 ### Utiliser la somme de la distance carré
 
 Pour négliger l'impact de bruits et la difference  d‘apparence des visages, on va effectuer une fonction:
+http://chart.googleapis.com/chart?cht=tx&chl=\Large y=x^{2})
 $$y=x^2$$
 
 ```python
@@ -123,12 +124,12 @@ for i in range(len(signature_indexes)):
 ```
 
 **Remarque**, peut-etre la fonction soft l1 est mieux:
-$$y=x^2 \ \ si\  x \leq thresh$$
-$$y=|x| \ \ si \ x > thresh$$
+http://chart.googleapis.com/chart?cht=tx&chl=\Large y=x^2 \ \ si\  x \leq thresh)
+http://chart.googleapis.com/chart?cht=tx&chl=\Large y=|x| \ \ si \ x > thresh)
 
-### Filtage gaussienne
+### Filtrage gaussienne
 
-Utiliser une filtre gaussienne à rendre la résultat plus stable:
+Utiliser une filtre gaussienne pour rendre les résultats plus stable:
 
 ```python
 # Gauss filter
