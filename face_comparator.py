@@ -70,7 +70,6 @@ class face_comparator:
         # squared Euclidean distance
         squared_euclidean_distance = 0
         for i in range(len(signature_indexes)):
-            #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
             squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :])/10)**2
         self.last_distance_2 = self.last_distance_1
         self.last_distance_1 = self.last_distance_0
@@ -91,4 +90,9 @@ class face_comparator:
         #total_distance = l2_distance + cos_distance*1000
         total_distance = squared_euclidean_distance
 
-        return total_distance
+        # convert distance to similarity
+        distance_when_similarity_is_90 = 50
+        distance_when_similarity_is_0 = 300
+        similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
+
+        return similarity

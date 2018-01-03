@@ -51,8 +51,8 @@ def run():
             break
 
         actual_fps = 1.0 / (time.time() - start_time)
-        distance = fc.compare_face(face_key_points_reference, face_key_points)
-        print('fps: %8.2f, distance:%8.2f \r' % (actual_fps, distance), end='')
+        similarity = fc.compare_face(face_key_points_reference, face_key_points)
+        print('fps: %8.2f, similarity:%8.2f \r' % (actual_fps, similarity), end='')
 
 
 if __name__ == '__main__':
