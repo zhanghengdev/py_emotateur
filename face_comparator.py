@@ -34,12 +34,17 @@ class face_comparator:
             return 0
         face_key_points_1[:, 2] = 1
         face_key_points_2[:, 2] = 1
-        # alignement
+
+        # alignement_1
+        a = 1/(distance.euclidean(face_key_points_1[30, :2], face_key_points_1[8, :2]))
+        T_1 = np.array([[a,0,0],[0,a,0],[0,0,1]])
+        # alignement_2
         location_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                                 27, 28, 29, 30]
         I = np.transpose(face_key_points_2[location_indexes, :])
-        I_p = np.transpose(face_key_points_1[location_indexes, :])
-        T = np.dot(I_p, pinv(I))
+        face_key_points_1_transformed = np.transpose(np.dot(T_1, np.transpose(face_key_points_1)))
+        I_p = np.transpose(face_key_points_1_transformed[location_indexes, :])
+        T_2 = np.dot(I_p, pinv(I))
 
         # vectors
         signature_indexes = [17, 18, 19, 20, 21,                                # left eye brow
@@ -51,10 +56,12 @@ class face_comparator:
                                 68, 69]                                         # pupil
         center_index = 30
         # vectors_1
-        vectors_1 = face_key_points_1[signature_indexes, :2] - face_key_points_1[center_index, :2]
+        face_key_points_1_signature_aligned = np.transpose(np.dot(T_1, np.transpose(face_key_points_1[signature_indexes, :])))
+        face_key_points_1_center_aligned = np.transpose(np.dot(T_1, np.transpose(face_key_points_1[center_index, :])))
+        vectors_1 = face_key_points_1_signature_aligned[:,:2]-face_key_points_1_center_aligned[:2]
         # vectors_2
-        face_key_points_2_signature_aligned = np.transpose(np.dot(T, np.transpose(face_key_points_2[signature_indexes, :])))
-        face_key_points_2_center_aligned = np.transpose(np.dot(T, np.transpose(face_key_points_2[center_index, :])))
+        face_key_points_2_signature_aligned = np.transpose(np.dot(T_2, np.transpose(face_key_points_2[signature_indexes, :])))
+        face_key_points_2_center_aligned = np.transpose(np.dot(T_2, np.transpose(face_key_points_2[center_index, :])))
         vectors_2 = face_key_points_2_signature_aligned[:,:2]-face_key_points_2_center_aligned[:2]
 
 
@@ -70,7 +77,7 @@ class face_comparator:
         # squared Euclidean distance
         squared_euclidean_distance = 0
         for i in range(len(signature_indexes)):
-            squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :])/10)**2
+            squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :]))**2
         self.last_distance_2 = self.last_distance_1
         self.last_distance_1 = self.last_distance_0
         self.last_distance_0 = squared_euclidean_distance
@@ -95,4 +102,4 @@ class face_comparator:
         distance_when_similarity_is_0 = 100
         similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
 
-        return similarity
+        return total_distance

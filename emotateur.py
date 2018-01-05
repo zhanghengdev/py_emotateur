@@ -16,7 +16,7 @@ def run():
     actual_fps = 0
     paused = False
     delay = {True: 0, False: 1}
-    faceBB = [50, 50, 400, 400]
+    faceBB = [50, 50, 300, 300]
 
     if len(sys.argv) > 1:
         img_reference_file_name = sys.argv[1]
@@ -29,6 +29,8 @@ def run():
         faceBB = [180, 60, 250, 250]
     elif 'test3' in img_reference_file_name:
         faceBB = [220, 120, 230, 230]
+    elif 'test4' in img_reference_file_name:
+        faceBB = [250, 90, 200, 200]
     res_reference = cv2.resize(img_reference,(frame.shape[1],frame.shape[0]), interpolation = cv2.INTER_CUBIC)
     res_reference, face_key_points_reference = fc.get_face_key_points(res_reference, faceBB)
     cv2.imshow("reference", res_reference)
@@ -56,8 +58,10 @@ def run():
             break
 
         actual_fps = 1.0 / (time.time() - start_time)
+        start_time = time.time()
         similarity = fc.compare_face(face_key_points_reference, face_key_points)
-        print('fps: %8.2f, similarity:%8.2f \r' % (actual_fps, similarity), end='')
+        similarity_fps = 1.0 / (time.time() - start_time)
+        print('actual_fps: %8.2f, similarity_fps: %8.2f, total_distance:%8.2f \r' % (actual_fps, similarity_fps, similarity), end='')
 
 
 if __name__ == '__main__':
