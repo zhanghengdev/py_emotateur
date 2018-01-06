@@ -16,7 +16,7 @@ def run():
     actual_fps = 0
     paused = False
     delay = {True: 0, False: 1}
-    faceBB = [50, 50, 300, 300]
+    faceBB = [150, 75, 300, 300]
 
     if len(sys.argv) > 1:
         img_reference_file_name = sys.argv[1]
@@ -31,6 +31,8 @@ def run():
         faceBB = [220, 120, 230, 230]
     elif 'test4' in img_reference_file_name:
         faceBB = [250, 90, 200, 200]
+    elif 'test5' in img_reference_file_name:
+        faceBB = [150, 75, 300, 300]
     res_reference = cv2.resize(img_reference,(frame.shape[1],frame.shape[0]), interpolation = cv2.INTER_CUBIC)
     res_reference, face_key_points_reference = fc.get_face_key_points(res_reference, faceBB)
     cv2.imshow("reference", res_reference)
@@ -46,6 +48,8 @@ def run():
             break
 
         res, face_key_points = fc.get_face_key_points(frame, faceBB)
+        faceBB =  fc.computeBB(face_key_points, faceBB)
+
         cv2.putText(res, 'Press \'q\' to stop.', (20, 20), 0, 0.5, (0, 0, 255))
         cv2.putText(res, 'Press \'p\' to pause.', (20, 40), 0, 0.5, (0, 0, 255))
         cv2.imshow("webcam", res)

@@ -19,6 +19,24 @@ class face_comparator:
         self.last_distance_1 = 0
         self.last_distance_2 = 0
 
+    def computeBB(self, face_key_points, faceBB, padding=0.4):
+        score = np.mean(face_key_points[:, 2])
+        if score < 0.5:
+            return faceBB
+        minX = np.min(face_key_points[:, 0])
+        minY = np.min(face_key_points[:, 1])
+        maxX = np.max(face_key_points[:, 0])
+        maxY = np.max(face_key_points[:, 1])
+        width = maxX - minX
+        height = maxY - minY
+        padX = width * padding / 2
+        padY = height * padding / 2
+        minX -= padX
+        minY -= padY
+        width += 2 * padX
+        height += 2 * padY
+        return [int(minX), int(minY), int(width), int(height)]
+
     def get_face_key_points(self, img, faceBB):
         rgb = img[:, :self.outSize[0]]
         self.op.detectFace(rgb, np.array(faceBB, dtype=np.int32).reshape((1, 4)))
@@ -102,4 +120,5 @@ class face_comparator:
         distance_when_similarity_is_0 = 100
         similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
 
-        return total_distance
+        sim = max(0, min(1, 1-total_distance))
+        return sim
