@@ -1,72 +1,72 @@
-import time
-import cv2
-
-import numpy as np
-import os, sys
+from ui import ui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from face_comparator import *
+import cv2
+import sys
 
-def run():
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    imgSize = list(frame.shape)
-    outSize = imgSize[1::-1]
+class emotateur():
+    def __init__(self):
+        self.Form=QtWidgets.QWidget()
+        self.ui = ui(self.Form)
+        self.ui.left_label.setPixmap(QtGui.QPixmap("img/home.jpg").scaled(640, 480))
+        self.cap=cv2.VideoCapture()
+        if not self.cap.open(0):
+            print("camera configuration failed")
+            sys.exit(0)
+        ret, frame = self.cap.read()
+        imgSize = list(frame.shape)
+        outSize = imgSize[1::-1]
 
-    fc = face_comparator(outSize)
+        self.fc = face_comparator(outSize)
+        self.checkSimilarityTimer=QtCore.QTimer()
+        self.ui.folder_button.clicked.connect(self.openImage)
 
-    actual_fps = 0
-    paused = False
-    delay = {True: 0, False: 1}
-    faceBB = [150, 75, 300, 300]
+        self.faceBB = [150, 75, 300, 300]
+        self.checkSimilarityTimer.timeout.connect(self.updateFrame)
+        self.checkSimilarityTimer.start(1000/2)
 
-    if len(sys.argv) > 1:
-        img_reference_file_name = sys.argv[1]
-    else:
-        img_reference_file_name = 'img/test1.jpg'
-    img_reference = cv2.imread(img_reference_file_name)
-    if 'test1' in img_reference_file_name:
-        faceBB = [180, 50, 300, 300]
-    elif 'test2' in img_reference_file_name:
-        faceBB = [180, 60, 250, 250]
-    elif 'test3' in img_reference_file_name:
-        faceBB = [220, 120, 230, 230]
-    elif 'test4' in img_reference_file_name:
-        faceBB = [250, 90, 200, 200]
-    elif 'test5' in img_reference_file_name:
-        faceBB = [150, 75, 300, 300]
-    res_reference = cv2.resize(img_reference,(frame.shape[1],frame.shape[0]), interpolation = cv2.INTER_CUBIC)
-    res_reference, face_key_points_reference = fc.get_face_key_points(res_reference, faceBB)
-    cv2.imshow("reference", res_reference)
+    def opencvimg_2_pixmap(self, srcMat):
+        cv2.cvtColor(srcMat, cv2.COLOR_BGR2RGB,srcMat)
+        height, width, bytesPerComponent= srcMat.shape
+        bytesPerLine = bytesPerComponent* width
+        srcQImage= QtGui.QImage(srcMat.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
+        return QtGui.QPixmap.fromImage(srcQImage)
 
-    while True:
-        start_time = time.time()
+    def openImage(self):
+        self.checkSimilarityTimer.stop()
+        img_reference_file_name, filetype = QtWidgets.QFileDialog.getOpenFileName(self.Form,  "choose a file",  "",  "Image Files (*.png *.bmp *.jpg *.tif *.GIF)")
+        if 'test1' in img_reference_file_name:
+            faceBB = [180, 50, 300, 300]
+        elif 'test2' in img_reference_file_name:
+            faceBB = [180, 60, 250, 250]
+        elif 'test3' in img_reference_file_name:
+            faceBB = [220, 120, 230, 230]
+        elif 'test4' in img_reference_file_name:
+            faceBB = [250, 90, 200, 200]
+        elif 'test5' in img_reference_file_name:
+            faceBB = [150, 75, 300, 300]
+        img_reference = cv2.imread(img_reference_file_name)
+        res_reference = cv2.resize(img_reference,(640, 480), interpolation = cv2.INTER_CUBIC)
+        res_reference, self.face_key_points_reference = self.fc.get_face_key_points(res_reference, faceBB)
+        self.ui.left_label.setPixmap(self.opencvimg_2_pixmap(res_reference))
+        self.checkSimilarityTimer.start(1000/2)
+
+    def updateFrame(self):
+        ret, srcMat=self.cap.read()
+        srcMat=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
+        frame=cv2.flip(srcMat, 1)
+        res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
+        self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
+        self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(res))
         try:
-            ret, frame = cap.read()
-            frame = cv2.flip( frame, 1 )
+            similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
+            self.ui.similarity_number.setText( "%.2f%%" % (similarity*100))
+            self.ui.verticalSlider.setValue(int(similarity*100))
+        except:
+            pass
 
-        except Exception as e:
-            print("Failed to grab", e)
-            break
-
-        res, face_key_points = fc.get_face_key_points(frame, faceBB)
-        faceBB =  fc.computeBB(face_key_points, faceBB)
-
-        cv2.putText(res, 'Press \'q\' to stop.', (20, 20), 0, 0.5, (0, 0, 255))
-        cv2.putText(res, 'Press \'p\' to pause.', (20, 40), 0, 0.5, (0, 0, 255))
-        cv2.imshow("webcam", res)
-
-        key = cv2.waitKey(delay[paused])
-        if key & 255 == ord('p'):
-            paused = not paused
-
-        if key & 255 == ord('q'):
-            break
-
-        actual_fps = 1.0 / (time.time() - start_time)
-        start_time = time.time()
-        similarity = fc.compare_face(face_key_points_reference, face_key_points)
-        similarity_fps = 1.0 / (time.time() - start_time)
-        print('actual_fps: %8.2f, similarity_fps: %8.2f, total_distance:%8.2f \r' % (actual_fps, similarity_fps, similarity), end='')
-
-
-if __name__ == '__main__':
-    run()
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    e = emotateur()
+    e.Form.show()
+    sys.exit(app.exec_())
