@@ -9,6 +9,7 @@ class emotateur():
         self.Form=QtWidgets.QWidget()
         self.ui = ui(self.Form)
         self.ui.left_label.setPixmap(QtGui.QPixmap("img/home.jpg").scaled(640, 480))
+        self.ui.left_label_1.setPixmap(QtGui.QPixmap("img/home.jpg").scaled(640, 480))
         self.cap=cv2.VideoCapture()
         if not self.cap.open(0):
             print("camera configuration failed")
@@ -24,6 +25,19 @@ class emotateur():
         self.faceBB = [150, 75, 300, 300]
         self.checkSimilarityTimer.timeout.connect(self.updateFrame)
         self.checkSimilarityTimer.start(1000/2)
+
+        self.ui.showmore_button.clicked.connect(self.showMore)
+        self.show_more_flag = True
+
+    def showMore(self):
+        self.show_more_flag = not self.show_more_flag
+        if self.show_more_flag:
+            self.ui.left_label_1.show()
+            self.ui.right_label_1.show()
+        else:
+            self.ui.left_label_1.hide()
+            self.ui.right_label_1.hide()
+
 
     def opencvimg_2_pixmap(self, srcMat):
         cv2.cvtColor(srcMat, cv2.COLOR_BGR2RGB,srcMat)
@@ -45,10 +59,13 @@ class emotateur():
             faceBB = [250, 90, 200, 200]
         elif 'test5' in img_reference_file_name:
             faceBB = [150, 75, 300, 300]
+        else:
+            return
         img_reference = cv2.imread(img_reference_file_name)
         res_reference = cv2.resize(img_reference,(640, 480), interpolation = cv2.INTER_CUBIC)
         res_reference, self.face_key_points_reference = self.fc.get_face_key_points(res_reference, faceBB)
-        self.ui.left_label.setPixmap(self.opencvimg_2_pixmap(res_reference))
+        self.ui.left_label.setPixmap(QtGui.QPixmap(img_reference_file_name).scaled(640, 480))
+        self.ui.left_label_1.setPixmap(self.opencvimg_2_pixmap(res_reference))
         self.checkSimilarityTimer.start(1000/2)
 
     def updateFrame(self):
@@ -57,7 +74,8 @@ class emotateur():
         frame=cv2.flip(srcMat, 1)
         res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
         self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
-        self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(res))
+        self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(frame))
+        self.ui.right_label_1.setPixmap(self.opencvimg_2_pixmap(res))
         try:
             similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
             self.ui.similarity_number.setText( "%.2f%%" % (similarity*100))

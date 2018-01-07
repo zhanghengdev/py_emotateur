@@ -21,6 +21,10 @@ class ui(object):
         self.folder_button.setIcon(QtGui.QIcon("icon/folder.png"))
         self.folder_button.setObjectName("folder_button")
         self.horizontalLayout.addWidget(self.folder_button)
+        self.showmore_button = QtWidgets.QPushButton(Form)
+        self.showmore_button.setIcon(QtGui.QIcon("icon/info.png"))
+        self.showmore_button.setObjectName("showmore_button")
+        self.horizontalLayout.addWidget(self.showmore_button)
         self.horizontalLayout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.french_button = QtWidgets.QPushButton(Form)
         icon1 = QtGui.QIcon()
@@ -46,7 +50,6 @@ class ui(object):
         self.main_horizontal_layout.setObjectName("main_horizontal_layout")
         self.left_label = QtWidgets.QLabel(Form)
         self.left_label.setObjectName("left_label")
-        self.left_label.resize(640, 480)
         self.main_horizontal_layout.addWidget(self.left_label)
 
         self.similarity_vertical_layout = QtWidgets.QVBoxLayout()
@@ -92,9 +95,19 @@ class ui(object):
 
         self.right_label = QtWidgets.QLabel(Form)
         self.right_label.setObjectName("right_label")
-        self.right_label.resize(640, 480)
         self.main_horizontal_layout.addWidget(self.right_label)
         self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
+
+        self.main_horizontal_layout_1 = QtWidgets.QHBoxLayout()
+        self.main_horizontal_layout_1.setObjectName("main_horizontal_layout_1")
+        self.left_label_1 = QtWidgets.QLabel(Form)
+        self.left_label_1.setObjectName("left_label_1")
+        self.main_horizontal_layout_1.addWidget(self.left_label_1)
+        self.main_horizontal_layout_1.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+        self.right_label_1 = QtWidgets.QLabel(Form)
+        self.right_label_1.setObjectName("right_label_1")
+        self.main_horizontal_layout_1.addWidget(self.right_label_1)
+        self.overall_vertical_layout.addLayout(self.main_horizontal_layout_1)
 
         self.retranslateUi(Form)
         self.french_button.clicked.connect(self.setFrench)
@@ -110,23 +123,28 @@ class ui(object):
         self.french_button.setText(_translate("Form", "Français"))
         self.english_button.setText(_translate("Form", "English"))
         self.left_label.setText(_translate("Form", "left"))
+        self.left_label_1.setText(_translate("Form", "left_1"))
         self.similarity.setText(_translate("Form", "similarity"))
         self.similarity_number.setText(_translate("Form", "100%"))
         self.right_label.setText(_translate("Form", "right"))
+        self.right_label_1.setText(_translate("Form", "right_1"))
+        self.showmore_button.setText(_translate("Form", "clik to show more"))
 
     def setFrench(self):
         self.folder_button.setText("fichier ouvert")
         self.similarity.setText("similarité")
+        self.showmore_button.setText("cliquez pour afficher plus")
     def setEnglish(self):
         self.folder_button.setText("open file")
         self.similarity.setText("similarity")
+        self.showmore_button.setText("clik to show more")
     def setChinese(self):
         self.folder_button.setText("打开文件")
         self.similarity.setText("相似度")
+        self.showmore_button.setText("单击以显示更多")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui().setupUi(Form)
-    Form.show()
+    ui(Form).show()
     sys.exit(app.exec_())
