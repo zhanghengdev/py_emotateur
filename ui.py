@@ -97,6 +97,9 @@ class ui(object):
         self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
 
         self.retranslateUi(Form)
+        self.french_button.clicked.connect(self.setFrench)
+        self.english_button.clicked.connect(self.setEnglish)
+        self.chinese_button.clicked.connect(self.setChinese)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -110,6 +113,16 @@ class ui(object):
         self.similarity.setText(_translate("Form", "similarity"))
         self.similarity_number.setText(_translate("Form", "100%"))
         self.right_label.setText(_translate("Form", "right"))
+
+    def setFrench(self):
+        self.folder_button.setText("fichier ouvert")
+        self.similarity.setText("similarité")
+    def setEnglish(self):
+        self.folder_button.setText("open file")
+        self.similarity.setText("similarity")
+    def setChinese(self):
+        self.folder_button.setText("打开文件")
+        self.similarity.setText("相似度")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

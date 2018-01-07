@@ -13,7 +13,7 @@ class face_comparator:
         with_hands = False
         with_face = True
         self.outSize = outSize
-        self.op = OP.OpenPose((656, 368), (240, 240), tuple(self.outSize), "COCO", OPENPOSE_ROOT + os.sep + "models" + os.sep, 0,
+        self.op = OP.OpenPose((640, 480), (240, 240), tuple(self.outSize), "COCO", OPENPOSE_ROOT + os.sep + "models" + os.sep, 0,
                          download_heatmaps, OP.OpenPose.ScaleMode.ZeroToOne, with_face, with_hands)
         self.last_distance_0 = 0
         self.last_distance_1 = 0
