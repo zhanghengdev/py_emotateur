@@ -116,9 +116,9 @@ class face_comparator:
         total_distance = squared_euclidean_distance
 
         # convert distance to similarity
-        distance_when_similarity_is_90 = 30
-        distance_when_similarity_is_0 = 100
-        similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
+        #distance_when_similarity_is_90 = 30
+        #distance_when_similarity_is_0 = 100
+        #similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
 
         sim = max(0, min(1, 1-total_distance))
-        return sim
+        return ((sim*100)**0.5)*10

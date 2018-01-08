@@ -19,12 +19,14 @@ class emotateur():
         outSize = imgSize[1::-1]
 
         self.fc = face_comparator(outSize)
-        self.checkSimilarityTimer=QtCore.QTimer()
+        self.updateFrameTimer=QtCore.QTimer()
         self.ui.folder_button.clicked.connect(self.openImage)
 
         self.faceBB = [150, 75, 300, 300]
-        self.checkSimilarityTimer.timeout.connect(self.updateFrame)
-        self.checkSimilarityTimer.start(1000/2)
+
+        self.updateFrameTimer.timeout.connect(self.updateFrame)
+        self.updateFrameTimer.timeout.connect(self.updateScore)
+        self.updateFrameTimer.start(1000/2)
 
         self.ui.showmore_button.clicked.connect(self.showMore)
         self.show_more_flag = True
@@ -47,7 +49,7 @@ class emotateur():
         return QtGui.QPixmap.fromImage(srcQImage)
 
     def openImage(self):
-        self.checkSimilarityTimer.stop()
+        self.updateFrameTimer.stop()
         img_reference_file_name, filetype = QtWidgets.QFileDialog.getOpenFileName(self.Form,  "choose a file",  "",  "Image Files (*.png *.bmp *.jpg *.tif *.GIF)")
         if 'test1' in img_reference_file_name:
             faceBB = [180, 50, 300, 300]
@@ -66,20 +68,25 @@ class emotateur():
         res_reference, self.face_key_points_reference = self.fc.get_face_key_points(res_reference, faceBB)
         self.ui.left_label.setPixmap(QtGui.QPixmap(img_reference_file_name).scaled(640, 480))
         self.ui.left_label_1.setPixmap(self.opencvimg_2_pixmap(res_reference))
-        self.checkSimilarityTimer.start(1000/2)
+        self.updateFrameTimer.start(1000/2)
 
     def updateFrame(self):
         ret, srcMat=self.cap.read()
-        srcMat=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
-        frame=cv2.flip(srcMat, 1)
+        frame=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
+        frame=cv2.flip(frame, 1)
+        self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(frame))
+
+    def updateScore(self):
+        ret, srcMat=self.cap.read()
+        frame=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
+        frame=cv2.flip(frame, 1)
         res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
         self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
-        self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(frame))
         self.ui.right_label_1.setPixmap(self.opencvimg_2_pixmap(res))
         try:
             similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
-            self.ui.similarity_number.setText( "%.2f%%" % (similarity*100))
-            self.ui.verticalSlider.setValue(int(similarity*100))
+            self.ui.similarity_number.setText( "%.2f%%" % (similarity))
+            self.ui.verticalSlider.setValue(int(similarity))
         except:
             pass
 
