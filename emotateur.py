@@ -74,6 +74,7 @@ class emotateur():
         ret, srcMat=self.cap.read()
         frame=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
         frame=cv2.flip(frame, 1)
+        cv2.rectangle(frame, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), [50, 155, 50], 2)
         self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(frame))
 
     def updateScore(self):
