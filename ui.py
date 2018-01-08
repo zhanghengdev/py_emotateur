@@ -118,30 +118,28 @@ class ui(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "emotateur"))
-        self.folder_button.setText(_translate("Form", "open file"))
         self.chinese_button.setText(_translate("Form", "中文"))
         self.french_button.setText(_translate("Form", "Français"))
         self.english_button.setText(_translate("Form", "English"))
         self.left_label.setText(_translate("Form", "left"))
         self.left_label_1.setText(_translate("Form", "left_1"))
-        self.similarity.setText(_translate("Form", "similarity"))
         self.similarity_number.setText(_translate("Form", "100%"))
         self.right_label.setText(_translate("Form", "right"))
         self.right_label_1.setText(_translate("Form", "right_1"))
-        self.showmore_button.setText(_translate("Form", "clik to show more"))
+        self.setEnglish()
 
     def setFrench(self):
         self.folder_button.setText("fichier ouvert")
         self.similarity.setText("similarité")
-        self.showmore_button.setText("cliquez pour afficher plus")
+        self.showmore_button.setText("Changer le mode d'affichage")
     def setEnglish(self):
         self.folder_button.setText("open file")
         self.similarity.setText("similarity")
-        self.showmore_button.setText("clik to show more")
+        self.showmore_button.setText("Switch the display mode")
     def setChinese(self):
         self.folder_button.setText("打开文件")
         self.similarity.setText("相似度")
-        self.showmore_button.setText("单击以显示更多")
+        self.showmore_button.setText("切换显示模式")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
