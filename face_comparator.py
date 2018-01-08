@@ -41,7 +41,6 @@ class face_comparator:
         rgb = img[:, :self.outSize[0]]
         self.op.detectFace(rgb, np.array(faceBB, dtype=np.int32).reshape((1, 4)))
         res = self.op.render(rgb)
-        cv2.rectangle(res, (faceBB[0], faceBB[1]), (faceBB[0] + faceBB[2], faceBB[1] + faceBB[3]), [50, 155, 50], 2)
         face_key_points = self.op.getKeypoints(self.op.KeypointType.FACE)[0].reshape(-1, 3)
         return res, face_key_points
 

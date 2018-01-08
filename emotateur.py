@@ -88,6 +88,11 @@ class emotateur():
         frame=cv2.flip(frame, 1)
         res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
         self.detected, self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
+        if self.detected:
+            color = [50, 155, 50]
+        else:
+            color = [50, 50, 155]
+        cv2.rectangle(res, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), color, 2)
         self.ui.right_label_1.setPixmap(self.opencvimg_2_pixmap(res))
         try:
             similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
