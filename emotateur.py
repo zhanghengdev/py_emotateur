@@ -87,6 +87,12 @@ class emotateur():
         try:
             similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
             self.ui.similarity_number.setText( "%.2f%%" % (similarity))
+            if similarity > 80:
+                self.ui.similarity_number.setStyleSheet('color:green')
+            elif similarity < 60:
+                self.ui.similarity_number.setStyleSheet('color:red')
+            else:
+                self.ui.similarity_number.setStyleSheet('color:yellow')
             self.ui.verticalSlider.setValue(int(similarity))
         except:
             pass

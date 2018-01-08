@@ -9,7 +9,7 @@ We want to create a fun application, in which users can imitate facial expressio
 - Install [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) & [PyOpenPose](https://github.com/FORTH-ModelBasedTracker/PyOpenPose);
 - Activate the application:
 ```bash
-python3 emotateur.py img/test1.jpg
+python3 emotateur.py
 ```
 
 ## Documents
