@@ -22,7 +22,7 @@ class face_comparator:
     def computeBB(self, face_key_points, faceBB, padding=0.4):
         score = np.mean(face_key_points[:, 2])
         if score < 0.5:
-            return faceBB
+            return False, faceBB
         minX = np.min(face_key_points[:, 0])
         minY = np.min(face_key_points[:, 1])
         maxX = np.max(face_key_points[:, 0])
@@ -35,7 +35,7 @@ class face_comparator:
         minY -= padY
         width += 2 * padX
         height += 2 * padY
-        return [int(minX), int(minY), int(width), int(height)]
+        return True, [int(minX), int(minY), int(width), int(height)]
 
     def get_face_key_points(self, img, faceBB):
         rgb = img[:, :self.outSize[0]]

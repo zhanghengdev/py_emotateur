@@ -30,6 +30,7 @@ class emotateur():
 
         self.ui.showmore_button.clicked.connect(self.showMore)
         self.show_more_flag = True
+        self.detected = False
 
     def showMore(self):
         self.show_more_flag = not self.show_more_flag
@@ -74,7 +75,11 @@ class emotateur():
         ret, srcMat=self.cap.read()
         frame=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
         frame=cv2.flip(frame, 1)
-        cv2.rectangle(frame, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), [50, 155, 50], 2)
+        if self.detected:
+            color = [50, 155, 50]
+        else:
+            color = [50, 50, 155]
+        cv2.rectangle(frame, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), color, 2)
         self.ui.right_label.setPixmap(self.opencvimg_2_pixmap(frame))
 
     def updateScore(self):
@@ -82,7 +87,7 @@ class emotateur():
         frame=cv2.resize(srcMat, (640, 480), interpolation=cv2.INTER_CUBIC)
         frame=cv2.flip(frame, 1)
         res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
-        self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
+        self.detected, self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
         self.ui.right_label_1.setPixmap(self.opencvimg_2_pixmap(res))
         try:
             similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
