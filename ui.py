@@ -46,11 +46,16 @@ class ui(object):
         self.horizontalLayout.addWidget(self.chinese_button)
         self.overall_vertical_layout.addLayout(self.horizontalLayout)
 
-        self.main_horizontal_layout = QtWidgets.QHBoxLayout()
-        self.main_horizontal_layout.setObjectName("main_horizontal_layout")
+
+        self.left_vertical_layout = QtWidgets.QVBoxLayout(Form)
+        self.left_vertical_layout.setObjectName("left_vertical_layout")
         self.left_label = QtWidgets.QLabel(Form)
         self.left_label.setObjectName("left_label")
-        self.main_horizontal_layout.addWidget(self.left_label)
+        self.left_vertical_layout.addWidget(self.left_label)
+        self.left_label_1 = QtWidgets.QLabel(Form)
+        self.left_label_1.setObjectName("left_label_1")
+        self.left_vertical_layout.addWidget(self.left_label_1)
+
 
         self.similarity_vertical_layout = QtWidgets.QVBoxLayout()
         self.similarity_vertical_layout.setObjectName("similarity_vertical_layout")
@@ -91,23 +96,23 @@ class ui(object):
         self.similarity_horizontal_layout.addWidget(self.verticalSlider)
         self.similarity_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.similarity_vertical_layout.addLayout(self.similarity_horizontal_layout)
-        self.main_horizontal_layout.addLayout(self.similarity_vertical_layout)
 
+
+        self.right_vertical_layout = QtWidgets.QVBoxLayout(Form)
+        self.right_vertical_layout.setObjectName("right_vertical_layout")
         self.right_label = QtWidgets.QLabel(Form)
         self.right_label.setObjectName("right_label")
-        self.main_horizontal_layout.addWidget(self.right_label)
-        self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
-
-        self.main_horizontal_layout_1 = QtWidgets.QHBoxLayout()
-        self.main_horizontal_layout_1.setObjectName("main_horizontal_layout_1")
-        self.left_label_1 = QtWidgets.QLabel(Form)
-        self.left_label_1.setObjectName("left_label_1")
-        self.main_horizontal_layout_1.addWidget(self.left_label_1)
-        self.main_horizontal_layout_1.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.right_label_1 = QtWidgets.QLabel(Form)
+        self.right_vertical_layout.addWidget(self.right_label)
         self.right_label_1.setObjectName("right_label_1")
-        self.main_horizontal_layout_1.addWidget(self.right_label_1)
-        self.overall_vertical_layout.addLayout(self.main_horizontal_layout_1)
+        self.right_vertical_layout.addWidget(self.right_label_1)
+
+        self.main_horizontal_layout = QtWidgets.QHBoxLayout()
+        self.main_horizontal_layout.setObjectName("main_horizontal_layout")
+        self.main_horizontal_layout.addLayout(self.left_vertical_layout)
+        self.main_horizontal_layout.addLayout(self.similarity_vertical_layout)
+        self.main_horizontal_layout.addLayout(self.right_vertical_layout)
+        self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
 
         self.retranslateUi(Form)
         self.french_button.clicked.connect(self.setFrench)
