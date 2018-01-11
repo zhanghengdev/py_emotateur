@@ -1,85 +1,75 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'D:\pyqtWork\projetV1\test.ui'
-#
-# Created by: PyQt5 UI code generator 5.6
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys
+from random import *
+import sys, os
 
 class ui(object):
     def __init__(self, Form):
-        Form.setObjectName("Form")
+        self.Form = Form
+        self.Form.setObjectName("Form")
+
         self.overall_vertical_layout = QtWidgets.QVBoxLayout(Form)
         self.overall_vertical_layout.setObjectName("overall_vertical_layout")
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.folder_button = QtWidgets.QPushButton(Form)
-        self.folder_button.setIcon(QtGui.QIcon("icon/folder.png"))
-        self.folder_button.setObjectName("folder_button")
-        self.horizontalLayout.addWidget(self.folder_button)
+        self.buttonsHorizontalLayout = QtWidgets.QHBoxLayout()
+        self.buttonsHorizontalLayout.setObjectName("buttonsHorizontalLayout")
+        self.home_button = QtWidgets.QPushButton(Form)
+        self.home_button.setIcon(QtGui.QIcon("icon/home.png"))
+        self.home_button.setObjectName("home_button")
+        self.buttonsHorizontalLayout.addWidget(self.home_button)
+        self.start_button = QtWidgets.QPushButton(Form)
+        self.start_button.setIcon(QtGui.QIcon("icon/start.png"))
+        self.start_button.setObjectName("start_button")
+        self.buttonsHorizontalLayout.addWidget(self.start_button)
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setIcon(QtGui.QIcon("icon/next.png"))
+        self.next_button.setObjectName("next_button")
+        self.buttonsHorizontalLayout.addWidget(self.next_button)
         self.showmore_button = QtWidgets.QPushButton(Form)
-        self.showmore_button.setIcon(QtGui.QIcon("icon/info.png"))
+        self.showmore_button.setIcon(QtGui.QIcon("icon/convert.png"))
         self.showmore_button.setObjectName("showmore_button")
-        self.horizontalLayout.addWidget(self.showmore_button)
-        self.horizontalLayout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+        self.buttonsHorizontalLayout.addWidget(self.showmore_button)
+        self.about_us_button = QtWidgets.QPushButton(Form)
+        self.about_us_button.setIcon(QtGui.QIcon("icon/info.png"))
+        self.about_us_button.setObjectName("about_us_button")
+        self.buttonsHorizontalLayout.addWidget(self.about_us_button)
+        self.buttonsHorizontalLayout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.french_button = QtWidgets.QPushButton(Form)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icon/france.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.french_button.setIcon(icon1)
+        self.french_button.setIcon(QtGui.QIcon("icon/france.ico"))
+        self.french_button.setText("Français")
         self.french_button.setObjectName("french_button")
-        self.horizontalLayout.addWidget(self.french_button)
+        self.buttonsHorizontalLayout.addWidget(self.french_button)
         self.english_button = QtWidgets.QPushButton(Form)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icon/angleterre.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.english_button.setIcon(icon2)
+        self.english_button.setIcon(QtGui.QIcon("icon/angleterre.ico"))
+        self.english_button.setText("English")
         self.english_button.setObjectName("english_button")
-        self.horizontalLayout.addWidget(self.english_button)
+        self.buttonsHorizontalLayout.addWidget(self.english_button)
         self.chinese_button = QtWidgets.QPushButton(Form)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icon/chine.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.chinese_button.setIcon(icon)
+        self.chinese_button.setIcon(QtGui.QIcon("icon/chine.ico"))
+        self.chinese_button.setText("中文")
         self.chinese_button.setObjectName("chinese_button")
-        self.horizontalLayout.addWidget(self.chinese_button)
-        self.overall_vertical_layout.addLayout(self.horizontalLayout)
+        self.buttonsHorizontalLayout.addWidget(self.chinese_button)
+        self.overall_vertical_layout.addLayout(self.buttonsHorizontalLayout)
 
-
-        self.left_vertical_layout = QtWidgets.QVBoxLayout(Form)
+        self.left_vertical_layout = QtWidgets.QVBoxLayout()
         self.left_vertical_layout.setObjectName("left_vertical_layout")
-        self.left_label = QtWidgets.QLabel(Form)
-        self.left_label.setObjectName("left_label")
-        self.left_vertical_layout.addWidget(self.left_label)
-        self.left_label_1 = QtWidgets.QLabel(Form)
-        self.left_label_1.setObjectName("left_label_1")
-        self.left_vertical_layout.addWidget(self.left_label_1)
-
+        self.left_label_up = QtWidgets.QLabel(Form)
+        self.left_label_up.setObjectName("left_label_up")
+        self.left_vertical_layout.addWidget(self.left_label_up)
+        self.left_label_down = QtWidgets.QLabel(Form)
+        self.left_label_down.setObjectName("left_label_down")
+        self.left_label_down.hide()
+        self.left_vertical_layout.addWidget(self.left_label_down)
 
         self.similarity_vertical_layout = QtWidgets.QVBoxLayout()
         self.similarity_vertical_layout.setObjectName("similarity_vertical_layout")
         self.similarity = QtWidgets.QLabel(Form)
-        font = QtGui.QFont()
-        font.setFamily("Arial Black")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setItalic(True)
-        font.setUnderline(True)
-        font.setWeight(75)
-        self.similarity.setFont(font)
         self.similarity.setAlignment(QtCore.Qt.AlignCenter)
         self.similarity.setObjectName("similarity")
         self.similarity_vertical_layout.addWidget(self.similarity)
         self.similarity_number = QtWidgets.QLabel(Form)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setItalic(True)
-        font.setWeight(75)
-        self.similarity_number.setFont(font)
         self.similarity_number.setAlignment(QtCore.Qt.AlignCenter)
+        self.similarity_number.setPixmap(QtGui.QPixmap("icon/sim.png").scaled(40, 40))
         self.similarity_number.setObjectName("similarity_number")
         self.similarity_vertical_layout.addWidget(self.similarity_number)
 
@@ -97,57 +87,104 @@ class ui(object):
         self.similarity_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.similarity_vertical_layout.addLayout(self.similarity_horizontal_layout)
 
-
-        self.right_vertical_layout = QtWidgets.QVBoxLayout(Form)
+        self.right_vertical_layout = QtWidgets.QVBoxLayout()
         self.right_vertical_layout.setObjectName("right_vertical_layout")
-        self.right_label = QtWidgets.QLabel(Form)
-        self.right_label.setObjectName("right_label")
-        self.right_label_1 = QtWidgets.QLabel(Form)
-        self.right_vertical_layout.addWidget(self.right_label)
-        self.right_label_1.setObjectName("right_label_1")
-        self.right_vertical_layout.addWidget(self.right_label_1)
+        self.right_label_up = QtWidgets.QLabel(Form)
+        self.right_label_up.setObjectName("right_label_up")
+        self.right_vertical_layout.addWidget(self.right_label_up)
+        self.right_label_down = QtWidgets.QLabel(Form)
+        self.right_label_down.hide()
+        self.right_label_down.setObjectName("right_label_down")
+        self.right_vertical_layout.addWidget(self.right_label_down)
 
         self.main_horizontal_layout = QtWidgets.QHBoxLayout()
         self.main_horizontal_layout.setObjectName("main_horizontal_layout")
+        self.main_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.main_horizontal_layout.addLayout(self.left_vertical_layout)
         self.main_horizontal_layout.addLayout(self.similarity_vertical_layout)
         self.main_horizontal_layout.addLayout(self.right_vertical_layout)
+        self.main_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
 
-        self.retranslateUi(Form)
         self.french_button.clicked.connect(self.setFrench)
         self.english_button.clicked.connect(self.setEnglish)
         self.chinese_button.clicked.connect(self.setChinese)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.showmore_button.clicked.connect(self.show_more_info)
+        self.about_us_button.clicked.connect(self.show_about_us)
+        QtCore.QMetaObject.connectSlotsByName(self.Form)
+        self.Form.setWindowTitle("emotateur")
+        self.Form.setFixedSize(1300, 500)
+        self.setFrench()
 
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "emotateur"))
-        self.chinese_button.setText(_translate("Form", "中文"))
-        self.french_button.setText(_translate("Form", "Français"))
-        self.english_button.setText(_translate("Form", "English"))
-        self.left_label.setText(_translate("Form", "left"))
-        self.left_label_1.setText(_translate("Form", "left_1"))
-        self.similarity_number.setText(_translate("Form", "100%"))
-        self.right_label.setText(_translate("Form", "right"))
-        self.right_label_1.setText(_translate("Form", "right_1"))
-        self.setEnglish()
+    def show_home_image(self):
+        file_name = os.path.join('icon', 'home.jpg')
+        self.left_label_up.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
+        file_name = os.path.join('icon', 'no_signal.jpg')
+        self.left_label_down.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
+        self.right_label_down.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
+
+    def update_left_label_up_with_pixmap(self, pixmap_up):
+        self.left_label_up.setPixmap(pixmap_up)
+    def update_left_label_down_with_pixmap(self, pixmap_down):
+        self.left_label_down.setPixmap(pixmap_down)
+    def update_right_label_up_with_pixmap(self, pixmap_up):
+        self.right_label_up.setPixmap(pixmap_up)
+    def update_right_label_down_with_pixmap(self, pixmap_down):
+        self.right_label_down.setPixmap(pixmap_down)
+
+    def update_score(self, similarity):
+        self.similarity_number.setText( "%.2f%%" % (similarity))
+        if similarity > 90:
+            self.similarity_number.setPixmap(QtGui.QPixmap("icon/success.png").scaled(40, 40))
+        elif similarity > 80:
+            self.similarity_number.setStyleSheet('color:green')
+        elif similarity < 60:
+            self.similarity_number.setStyleSheet('color:red')
+        else:
+            self.similarity_number.setStyleSheet('color:yellow')
+        self.verticalSlider.setValue(int(similarity))
+
+    def show_more_info(self):
+        if self.left_label_down.isVisible():
+            self.left_label_down.hide()
+            self.right_label_down.hide()
+            self.Form.setFixedSize(1300, 500)
+        else:
+            self.left_label_down.show()
+            self.right_label_down.show()
+            self.Form.setFixedSize(1300, 1000)
+
+    def show_about_us(self):
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setWindowTitle('Imamapi')
+        msgBox.setIconPixmap(QtGui.QPixmap("icon/img.jpg").scaled(640, 640))
+        ret = msgBox.exec_()
 
     def setFrench(self):
-        self.folder_button.setText("fichier ouvert")
+        self.home_button.setText("Maison")
+        self.start_button.setText("Commencer")
+        self.next_button.setText("prochain")
         self.similarity.setText("similarité")
         self.showmore_button.setText("Changer le mode d'affichage")
+        self.about_us_button.setText("À propos de nous")
     def setEnglish(self):
-        self.folder_button.setText("open file")
+        self.home_button.setText("Home")
+        self.start_button.setText("Start")
+        self.next_button.setText("Next")
         self.similarity.setText("similarity")
         self.showmore_button.setText("Switch the display mode")
+        self.about_us_button.setText("About us")
     def setChinese(self):
-        self.folder_button.setText("打开文件")
+        self.home_button.setText("回到主页")
+        self.start_button.setText("开始游戏")
+        self.next_button.setText("下一个")
         self.similarity.setText("相似度")
         self.showmore_button.setText("切换显示模式")
+        self.about_us_button.setText("关于我们")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui(Form).show()
+    ui = ui(Form)
+    Form.show()
     sys.exit(app.exec_())
