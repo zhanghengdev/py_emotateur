@@ -42,13 +42,15 @@ class emotateur():
     def start_home_screen(self):
         if self.update_frame_score_timer.isActive():
             self.update_frame_score_timer.stop()
-        self.ui.show_home_image()
+        self.ui.start_home_screen()
         self.home_timer=QtCore.QTimer()
         self.home_timer.timeout.connect(self.updateFrame)
+        self.home_timer.timeout.connect(self.ui.update_home_scene)
         self.home_timer.start(1000/25)
 
     def stop_home_screen(self):
         self.home_timer.stop()
+        self.ui.stop_home_screen()
 
     def load_image(self):
         img_reference_file_name = os.path.join('img','{}.jpg'.format(self.current_image))

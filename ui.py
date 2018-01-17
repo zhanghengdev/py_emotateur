@@ -53,6 +53,10 @@ class ui(object):
 
         self.left_vertical_layout = QtWidgets.QVBoxLayout()
         self.left_vertical_layout.setObjectName("left_vertical_layout")
+        self.graphicsView = QtWidgets.QGraphicsView(Form)
+        self.graphicsView.setFixedSize(640, 480)
+        self.graphicsView.setObjectName("graphicsView")
+        self.left_vertical_layout.addWidget(self.graphicsView)
         self.left_label_up = QtWidgets.QLabel(Form)
         self.left_label_up.setObjectName("left_label_up")
         self.left_vertical_layout.addWidget(self.left_label_up)
@@ -106,6 +110,8 @@ class ui(object):
         self.main_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
 
+        self.scene = QtWidgets.QGraphicsScene()
+
         self.french_button.clicked.connect(self.setFrench)
         self.english_button.clicked.connect(self.setEnglish)
         self.chinese_button.clicked.connect(self.setChinese)
@@ -113,15 +119,32 @@ class ui(object):
         self.about_us_button.clicked.connect(self.show_about_us)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
         self.Form.setWindowTitle("emotateur")
-        self.Form.setFixedSize(1300, 500)
+        self.Form.setFixedSize(1400, 600)
         self.setFrench()
 
-    def show_home_image(self):
-        file_name = os.path.join('icon', 'home.jpg')
-        self.left_label_up.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
-        file_name = os.path.join('icon', 'no_signal.jpg')
-        self.left_label_down.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
-        self.right_label_down.setPixmap(QtGui.QPixmap(file_name).scaled(640, 480))
+    def start_home_screen(self):
+        self.left_label_up.hide()
+        self.graphicsView.show()
+        self.left_label_down.hide()
+        self.right_label_down.hide()
+        self.Form.setFixedSize(1400, 600)
+
+    def stop_home_screen(self):
+        self.left_label_up.show()
+        self.graphicsView.hide()
+        self.left_label_down.hide()
+        self.right_label_down.hide()
+        self.Form.setFixedSize(1400, 600)
+
+    def update_home_scene(self):
+        random_file = os.listdir('img/')[randint(0, 4)]
+        file_name = os.path.join('img', random_file)
+        item=QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap(file_name).scaled(160,120))
+        self.scene.addItem(item)
+        lig = randint(1, 3)
+        col = randint(1, 3)
+        item.setPos(col*160,lig*120)
+        self.graphicsView.setScene(self.scene)
 
     def update_left_label_up_with_pixmap(self, pixmap_up):
         self.left_label_up.setPixmap(pixmap_up)
@@ -148,11 +171,11 @@ class ui(object):
         if self.left_label_down.isVisible():
             self.left_label_down.hide()
             self.right_label_down.hide()
-            self.Form.setFixedSize(1300, 500)
+            self.Form.setFixedSize(1400, 600)
         else:
             self.left_label_down.show()
             self.right_label_down.show()
-            self.Form.setFixedSize(1300, 1000)
+            self.Form.setFixedSize(1400, 1080)
 
     def show_about_us(self):
         msgBox = QtWidgets.QMessageBox()
