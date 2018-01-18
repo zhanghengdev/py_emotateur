@@ -137,7 +137,7 @@ class ui(object):
         self.Form.setFixedSize(1400, 600)
 
     def update_home_scene(self):
-        random_file = os.listdir('img/')[randint(0, 4)]
+        random_file = os.listdir('img/')[randint(0, len(os.listdir('img/'))-1)]
         file_name = os.path.join('img', random_file)
         item=QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap(file_name).scaled(160,120))
         self.scene.addItem(item)

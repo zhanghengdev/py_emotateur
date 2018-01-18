@@ -25,7 +25,12 @@ class emotateur():
                                     [180, 60, 250, 250],
                                     [220, 120, 230, 230],
                                     [250, 90, 200, 200],
-                                    [150, 75, 300, 300]   ]
+                                    [150, 75, 300, 300],
+                                    [160, 100, 250, 250],
+                                    [180, 100, 300, 300],
+                                    [180, 80, 300, 300],
+                                    [120, 100, 380, 380],
+                                    [200, 160, 230, 230]   ]
         self.update_frame_score_timer.timeout.connect(self.updateFrame)
         self.update_frame_score_timer.timeout.connect(self.updateScore)
         self.detected = False
@@ -46,7 +51,7 @@ class emotateur():
         self.home_timer=QtCore.QTimer()
         self.home_timer.timeout.connect(self.updateFrame)
         self.home_timer.timeout.connect(self.ui.update_home_scene)
-        self.home_timer.start(1000/25)
+        self.home_timer.start(1000/5)
 
     def stop_home_screen(self):
         self.home_timer.stop()
@@ -75,7 +80,7 @@ class emotateur():
 
     def load_next_image(self):
         if self.is_game_started():
-            if self.current_image == 4:
+            if self.current_image == 10:
                 self.current_image = 0
             else:
                 self.current_image += 1
