@@ -7,6 +7,7 @@ class ui(object):
     def __init__(self, Form):
         self.Form = Form
         self.Form.setObjectName("Form")
+        self.Form.setFixedSize(1400, 600)
 
         self.overall_vertical_layout = QtWidgets.QVBoxLayout(Form)
         self.overall_vertical_layout.setObjectName("overall_vertical_layout")
@@ -73,7 +74,6 @@ class ui(object):
         self.similarity_vertical_layout.addWidget(self.similarity)
         self.similarity_number = QtWidgets.QLabel(Form)
         self.similarity_number.setAlignment(QtCore.Qt.AlignCenter)
-        self.similarity_number.setPixmap(QtGui.QPixmap("icon/sim.png").scaled(40, 40))
         self.similarity_number.setObjectName("similarity_number")
         self.similarity_vertical_layout.addWidget(self.similarity_number)
 
@@ -110,6 +110,11 @@ class ui(object):
         self.main_horizontal_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
         self.overall_vertical_layout.addLayout(self.main_horizontal_layout)
 
+        self.info_label = QtWidgets.QLabel(Form)
+        self.info_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.info_label.setObjectName("info_label")
+        self.overall_vertical_layout.addWidget(self.info_label)
+
         self.scene = QtWidgets.QGraphicsScene()
 
         self.french_button.clicked.connect(self.setFrench)
@@ -119,22 +124,29 @@ class ui(object):
         self.about_us_button.clicked.connect(self.show_about_us)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
         self.Form.setWindowTitle("emotateur")
-        self.Form.setFixedSize(1400, 600)
         self.setFrench()
 
-    def start_home_screen(self):
-        self.left_label_up.hide()
-        self.graphicsView.show()
-        self.left_label_down.hide()
-        self.right_label_down.hide()
-        self.Form.setFixedSize(1400, 600)
-
-    def stop_home_screen(self):
-        self.left_label_up.show()
-        self.graphicsView.hide()
-        self.left_label_down.hide()
-        self.right_label_down.hide()
-        self.Form.setFixedSize(1400, 600)
+    def set_state(self, start_game):
+        if start_game:
+            self.start_button.setEnabled(False)
+            self.home_button.setEnabled(True)
+            self.next_button.setEnabled(True)
+            self.showmore_button.setEnabled(True)
+            self.left_label_up.show()
+            self.graphicsView.hide()
+            self.left_label_down.hide()
+            self.right_label_up.show()
+            self.right_label_down.hide()
+        else:
+            self.start_button.setEnabled(True)
+            self.home_button.setEnabled(False)
+            self.next_button.setEnabled(False)
+            self.showmore_button.setEnabled(False)
+            self.left_label_up.hide()
+            self.graphicsView.show()
+            self.left_label_down.hide()
+            self.right_label_up.show()
+            self.right_label_down.hide()
 
     def update_home_scene(self):
         random_file = os.listdir('img/')[randint(0, len(os.listdir('img/'))-1)]
@@ -171,11 +183,13 @@ class ui(object):
         if self.left_label_down.isVisible():
             self.left_label_down.hide()
             self.right_label_down.hide()
-            self.Form.setFixedSize(1400, 600)
+            self.left_label_up.show()
+            self.right_label_up.show()
         else:
             self.left_label_down.show()
             self.right_label_down.show()
-            self.Form.setFixedSize(1400, 1080)
+            self.left_label_up.hide()
+            self.right_label_up.hide()
 
     def show_about_us(self):
         msgBox = QtWidgets.QMessageBox()
@@ -186,23 +200,23 @@ class ui(object):
     def setFrench(self):
         self.home_button.setText("Maison")
         self.start_button.setText("Commencer")
-        self.next_button.setText("prochain")
-        self.similarity.setText("similarité")
-        self.showmore_button.setText("Changer le mode d'affichage")
+        self.next_button.setText("Prochain")
+        self.similarity.setText("Similarité")
+        self.showmore_button.setText("Points clés")
         self.about_us_button.setText("À propos de nous")
     def setEnglish(self):
         self.home_button.setText("Home")
         self.start_button.setText("Start")
         self.next_button.setText("Next")
-        self.similarity.setText("similarity")
-        self.showmore_button.setText("Switch the display mode")
+        self.similarity.setText("Similarity")
+        self.showmore_button.setText("Landmarks")
         self.about_us_button.setText("About us")
     def setChinese(self):
         self.home_button.setText("回到主页")
         self.start_button.setText("开始游戏")
         self.next_button.setText("下一个")
         self.similarity.setText("相似度")
-        self.showmore_button.setText("切换显示模式")
+        self.showmore_button.setText("显示关键点")
         self.about_us_button.setText("关于我们")
 
 if __name__ == "__main__":

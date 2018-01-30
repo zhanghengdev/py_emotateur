@@ -16,9 +16,9 @@ def run():
  actual_fps = 0
  paused = False
  delay = {True: 0, False: 1}
- faceBB = [200, 160, 230, 230]
+ faceBB = [250, 80, 200, 200]
 
- img_reference = cv2.imread('img/9.jpg')
+ img_reference = cv2.imread('img/19.jpg')
  color = [50, 155, 50]
  res_reference = cv2.resize(img_reference,(frame.shape[1],frame.shape[0]), interpolation = cv2.INTER_CUBIC)
  res_reference, face_key_points_reference = fc.get_face_key_points(res_reference, faceBB)

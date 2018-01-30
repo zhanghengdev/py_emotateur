@@ -99,7 +99,6 @@ class face_comparator:
         self.last_distance_1 = self.last_distance_0
         self.last_distance_0 = squared_euclidean_distance
         squared_euclidean_distance = np.dot(gauss_filter, [self.last_distance_2, self.last_distance_1, self.last_distance_0])
-
         # cos distance
         #cos_distance = 0
         #for i in range(len(signature_indexes)):
@@ -113,6 +112,7 @@ class face_comparator:
         # total distance
         #total_distance = l2_distance + cos_distance*1000
         total_distance = squared_euclidean_distance
+        print('total_distance={}\r'.format(total_distance), end='')
 
         # convert distance to similarity
         #distance_when_similarity_is_90 = 30

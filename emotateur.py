@@ -16,7 +16,6 @@ class emotateur():
         imgSize = list(frame.shape)
         outSize = imgSize[1::-1]
         self.fc = face_comparator(outSize)
-        self.update_frame_score_timer=QtCore.QTimer()
         self.ui.home_button.clicked.connect(self.start_home_screen)
         self.ui.start_button.clicked.connect(self.start_game)
         self.ui.next_button.clicked.connect(self.load_next_image)
@@ -30,9 +29,23 @@ class emotateur():
                                     [180, 100, 300, 300],
                                     [180, 80, 300, 300],
                                     [120, 100, 380, 380],
-                                    [200, 160, 230, 230]   ]
+                                    [200, 160, 230, 230],
+                                    [120, 120, 400, 400],
+                                    [280, 100, 200, 200],
+                                    [150, 100, 300, 300],
+                                    [200, 100, 300, 300],
+                                    [150, 30, 350, 350],
+                                    [130, 120, 320, 320],
+                                    [130, 120, 320, 320],
+                                    [180, 100, 250, 250],
+                                    [220, 100, 150, 150],
+                                    [250, 80, 200, 200]   ]
+        self.update_frame_score_timer=QtCore.QTimer()
         self.update_frame_score_timer.timeout.connect(self.updateFrame)
         self.update_frame_score_timer.timeout.connect(self.updateScore)
+        self.home_timer=QtCore.QTimer()
+        self.home_timer.timeout.connect(self.updateFrame)
+        self.home_timer.timeout.connect(self.ui.update_home_scene)
         self.detected = False
         self.current_image = 0
         self.start_home_screen()
@@ -47,15 +60,10 @@ class emotateur():
     def start_home_screen(self):
         if self.update_frame_score_timer.isActive():
             self.update_frame_score_timer.stop()
-        self.ui.start_home_screen()
-        self.home_timer=QtCore.QTimer()
-        self.home_timer.timeout.connect(self.updateFrame)
-        self.home_timer.timeout.connect(self.ui.update_home_scene)
         self.home_timer.start(1000/5)
-
-    def stop_home_screen(self):
-        self.home_timer.stop()
-        self.ui.stop_home_screen()
+        self.ui.set_state(False)
+        self.ui.update_score(0)
+        self.detected = False
 
     def load_image(self):
         img_reference_file_name = os.path.join('img','{}.jpg'.format(self.current_image))
@@ -66,25 +74,19 @@ class emotateur():
         self.ui.update_left_label_up_with_pixmap(QtGui.QPixmap(img_reference_file_name).scaled(640, 480))
         self.ui.update_left_label_down_with_pixmap(self.opencvimg_2_pixmap(res_reference))
 
-    def is_game_started(self):
-        return self.update_frame_score_timer.isActive()
-
     def start_game(self):
-        if self.is_game_started():
-            return
-        else:
-            self.stop_home_screen()
-            self.current_image = 0
-            self.load_image()
-            self.update_frame_score_timer.start(1000/2)
+        self.home_timer.stop()
+        self.current_image = 0
+        self.load_image()
+        self.update_frame_score_timer.start(1000/2)
+        self.ui.set_state(True)
 
     def load_next_image(self):
-        if self.is_game_started():
-            if self.current_image == 10:
-                self.current_image = 0
-            else:
-                self.current_image += 1
-            self.load_image()
+        if self.current_image == 20:
+            self.current_image = 0
+        else:
+            self.current_image += 1
+        self.load_image()
 
     def read_image_from_webcam(self):
         ret, srcMat=self.cap.read()
@@ -93,15 +95,12 @@ class emotateur():
         return frame
 
     def draw_rectangle(self, frame):
-        if not self.is_game_started():
-            return frame
+        if self.detected:
+            color = [50, 155, 50]
         else:
-            if self.detected:
-                color = [50, 155, 50]
-            else:
-                color = [50, 50, 155]
-            cv2.rectangle(frame, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), color, 2)
-            return frame
+            color = [50, 50, 155]
+        cv2.rectangle(frame, (self.faceBB[0], self.faceBB[1]), (self.faceBB[0] + self.faceBB[2], self.faceBB[1] + self.faceBB[3]), color, 2)
+        return frame
 
     def updateFrame(self):
         frame = self.read_image_from_webcam()
@@ -114,13 +113,10 @@ class emotateur():
         self.detected, self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
         frame = self.draw_rectangle(res)
         self.ui.update_right_label_down_with_pixmap(self.opencvimg_2_pixmap(res))
-        try:
-            similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
-            self.ui.update_score(similarity)
-            if similarity > 90:
-                self.load_next_image()
-        except:
-            pass
+        similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
+        self.ui.update_score(similarity)
+        if similarity > 90:
+            self.load_next_image()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
