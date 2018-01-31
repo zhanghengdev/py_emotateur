@@ -112,6 +112,7 @@ class emotateur():
         if time_used > 15:
             self.two_players_left_timer.stop()
             self.start_time = time.time()
+            self.faceBB = [150, 75, 300, 300]
             self.two_players_right_timer.start(1000/2)
             return
 
@@ -120,7 +121,8 @@ class emotateur():
         self.ui.update_right_label_up_with_pixmap(reference_image)
         self.ui.update_right_label_down_with_pixmap(reference_image)
 
-        frame = self.read_image_from_webcam()
+        self.reference_image = self.read_image_from_webcam()
+        frame = self.reference_image
         res, self.face_key_points_reference = self.fc.get_face_key_points(frame, self.faceBB)
         self.detected, self.faceBB = self.fc.computeBB(self.face_key_points_reference, self.faceBB)
         frame = self.draw_rectangle(frame)
@@ -135,15 +137,17 @@ class emotateur():
         if time_used > 20:
             self.two_players_right_timer.stop()
             self.start_time = time.time()
+            self.faceBB = [150, 75, 300, 300]
             self.two_players_left_timer.start(1000/2)
             return
 
         frame = self.read_image_from_webcam()
         res, face_key_points = self.fc.get_face_key_points(frame, self.faceBB)
         self.detected, self.faceBB = self.fc.computeBB(face_key_points, self.faceBB)
-        frame_rec = self.draw_rectangle(frame)
+        frame = self.draw_rectangle(frame)
         res = self.draw_rectangle(res)
-        self.ui.update_right_label_up_with_pixmap(self.opencvimg_2_pixmap(frame_rec))
+        frame = self.opencvimg_2_pixmap(frame)
+        self.ui.update_right_label_up_with_pixmap(frame)
         self.ui.update_right_label_down_with_pixmap(self.opencvimg_2_pixmap(res))
         similarity = self.fc.compare_face(self.face_key_points_reference, face_key_points)
         similarity = similarity if time_used > 10 else 0
@@ -152,7 +156,7 @@ class emotateur():
             self.two_players_right_timer.stop()
             self.start_time = time.time()
             self.two_players_left_timer.start(1000/2)
-            self.result_win.add_images(self.reference_image,self.opencvimg_2_pixmap(frame))
+            self.result_win.add_images(self.reference_image,frame)
 
     def stop_two_players_game(self):
         self.result_win.Form.show()
