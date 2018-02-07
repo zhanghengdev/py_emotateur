@@ -10,7 +10,7 @@ C'est un jeu vis à imiter les expressions faciales d'autre personne et mesurer 
 
 ## Page d'accueil
 
-Lorsque vous lancez l’application, il y aura un effet d'animation: les images de référence vont apparaître ou disparaître aléatoirem
+Lorsque vous lancez l’application, il y aura un effet d'animation: les images de référence vont apparaître ou disparaître aléatoirement.
 
 
 <p align="center">
