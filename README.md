@@ -83,11 +83,8 @@ python3 emotateur.py
 
 ## Team membres
 
+- [Yunyun SUN](https://github.com/syyprime) , [Yutong YAN](https://github.com/melodiepupu) , [Sixiang XU](https://github.com/soarodo) , [Heng ZHANG](https://github.com/ZHANGHeng19931123).
+
 <p align="center">
     <img src="doc/img.jpg", width="480">
 </p>
-
-- SUN Yunyun
-- XU Sixiang
-- YAN Yutong
-- ZHANG Heng
