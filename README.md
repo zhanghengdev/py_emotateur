@@ -80,7 +80,7 @@ python3 emotateur.py
 - [Diapositive](https://docs.google.com/presentation/d/1xqt5ODMEjq2VQG5CXfA-deQM4pDEkuEwCQUqi-MEBYk/edit?usp=sharing)
 - [Rapport](https://docs.google.com/document/d/1KEyb6dXMNXon9NAhRNZQWcWrzmU--qV9ne9t6XRb2aE/edit?usp=sharing)
 
-## Team members
+## L'équipe
 
 <p align="center">
     <img src="doc/img.jpg", width="480">
