@@ -4,6 +4,8 @@ import numpy as np
 import os
 from numpy.linalg import pinv
 from scipy.spatial import distance
+from scipy.linalg import polar
+import statistics
 
 OPENPOSE_ROOT = os.environ["OPENPOSE_ROOT"]
 
@@ -15,9 +17,9 @@ class face_comparator:
         self.outSize = outSize
         self.op = OP.OpenPose((640, 480), (240, 240), tuple(self.outSize), "COCO", OPENPOSE_ROOT + os.sep + "models" + os.sep, 0,
                          download_heatmaps, OP.OpenPose.ScaleMode.ZeroToOne, with_face, with_hands)
-        self.last_distance_0 = 0
-        self.last_distance_1 = 0
-        self.last_distance_2 = 0
+        self.last_similarity_0 = 0
+        self.last_similarity_1 = 0
+        self.last_similarity_2 = 0
 
     def computeBB(self, face_key_points, faceBB, padding=0.4):
         score = np.mean(face_key_points[:, 2])
@@ -57,6 +59,8 @@ class face_comparator:
         T_1 = np.array([[a,0,0],[0,a,0],[0,0,1]])
         # alignement_2
         location_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                                36, 39, 42, 45,
+                                31, 32, 33, 34, 35,
                                 27, 28, 29, 30]
         I = np.transpose(face_key_points_2[location_indexes, :])
         face_key_points_1_transformed = np.transpose(np.dot(T_1, np.transpose(face_key_points_1)))
@@ -85,39 +89,47 @@ class face_comparator:
         # Gauss filter
         gauss_filter = [7/74, 26/74, 41/74]
 
-        # Euclidean distance
-        #euclidean_distance = 0
-        #for i in range(len(signature_indexes)):
-            #l2_distance += np.linalg.norm(vectors_1[i, :]-vectors_2[i, :])
-        #    euclidean_distance += distance.euclidean(vectors_1[i, :], vectors_2[i, :])
-
         # squared Euclidean distance
         squared_euclidean_distance = 0
         for i in range(len(signature_indexes)):
             squared_euclidean_distance += (distance.euclidean(vectors_1[i, :], vectors_2[i, :]))**2
-        self.last_distance_2 = self.last_distance_1
-        self.last_distance_1 = self.last_distance_0
-        self.last_distance_0 = squared_euclidean_distance
-        squared_euclidean_distance = np.dot(gauss_filter, [self.last_distance_2, self.last_distance_1, self.last_distance_0])
-        # cos distance
-        #cos_distance = 0
-        #for i in range(len(signature_indexes)):
-        #    cos_distance += distance.cosine(vectors_1[i, :], vectors_2[i, :])
+        distance_when_similarity_is_90 = 0.2
+        distance_when_similarity_is_0 = 0.9
+        squared_euclidean_similarity = min(1, max(0, (distance_when_similarity_is_0-squared_euclidean_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
 
-        # squared cos distance
-        #squared_cos_distance = 0
-        #for i in range(len(signature_indexes)):
-        #    squared_cos_distance += (distance.cosine(vectors_1[i, :], vectors_2[i, :])/10)**2
+        # cos distance
+        cos_distance = 0
+        for i in range(len(signature_indexes)):
+            cos_distance += distance.cosine(vectors_1[i, :], vectors_2[i, :])
+        distance_when_similarity_is_90 = 0.1
+        distance_when_similarity_is_0 = 0.3
+        cos_similarity = min(1, max(0, (distance_when_similarity_is_0-cos_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
+
+
+        # Riemannian geometry
+        u1, r1 = polar(vectors_1)
+        u2, r2 = polar(vectors_2)
+        u, s, v = np.linalg.svd(np.dot(np.transpose(u1),u2), full_matrices=True)
+        sigma1 = s[0]
+        sigma2 = s[1]
+        theta1 = np.arccos(sigma1)
+        theta2 = np.arccos(sigma2)
+        theta = np.array([[theta1, 0],[0, theta2]])
+        theta_distance = np.linalg.norm(theta)**2
+        distance_when_similarity_is_90 = 0.01
+        distance_when_similarity_is_0 = 0.1
+        theta_similarity = min(1, max(0, (distance_when_similarity_is_0-theta_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
+
+        #distance2 = np.log(np.absolute(pinv(r1).dot(r2).dot(r2).dot(pinv(r1))))
+        #distance2 = np.linalg.norm(distance2)**2
 
         # total distance
         #total_distance = l2_distance + cos_distance*1000
-        total_distance = squared_euclidean_distance
-        print('total_distance={}\r'.format(total_distance), end='')
+        similarity = statistics.median([squared_euclidean_similarity, cos_similarity, theta_similarity])
+        self.last_similarity_2 = self.last_similarity_1
+        self.last_similarity_1 = self.last_similarity_0
+        self.last_similarity_0 = similarity
+        similarity = np.dot(gauss_filter, [self.last_similarity_2, self.last_similarity_1, self.last_similarity_0])
 
-        # convert distance to similarity
-        #distance_when_similarity_is_90 = 30
-        #distance_when_similarity_is_0 = 100
-        #similarity = min(1, max(0, 0.9*(distance_when_similarity_is_0-total_distance)/(distance_when_similarity_is_0-distance_when_similarity_is_90)))
-
-        sim = max(0, min(1, 1-total_distance))
-        return ((sim*100)**0.5)*10
+        print('similarity={}\r'.format(similarity), end='')
+        return ((similarity*100)**0.5)*10

@@ -10,8 +10,13 @@ class result_win(object):
         self.overall_vertical_layout = QtWidgets.QVBoxLayout(Form)
         self.overall_vertical_layout.setObjectName("overall_vertical_layout")
         self.Form.setWindowTitle("emotateur")
+        self.added = False
+
+    def is_added(self):
+        return self.added
 
     def add_images(self, pix_map0, pix_map1):
+        self.added = True
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.left_label = QtWidgets.QLabel(self.Form)
         self.left_label.setObjectName("left_label")

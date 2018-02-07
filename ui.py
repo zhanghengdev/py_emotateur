@@ -134,7 +134,12 @@ class ui(object):
         self.Form.setWindowTitle("emotateur")
         self.setFrench()
 
-    def set_state(self, mode):
+    def set_ui_mode(self, mode):
+        '''
+        mode = 0: home screen
+        mode = 1: one player mode
+        mode = 2: two players mode
+        '''
         if mode == 0:
             self.start_button.setEnabled(True)
             self.home_button.setEnabled(False)
@@ -179,7 +184,7 @@ class ui(object):
             self.two_players_button.show()
 
     def update_home_scene(self):
-        random_file = os.listdir('img/')[randint(0, len(os.listdir('img/'))-1)]
+        random_file = choice(os.listdir("img"))
         file_name = os.path.join('img', random_file)
         item=QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap(file_name).scaled(160,120))
         self.scene.addItem(item)
@@ -238,8 +243,8 @@ class ui(object):
         self.stop_button.setText("Arrêter")
         self.similarity.setText("Similarité")
         self.showmore_button.setText("Points clés")
-        self.one_player_button.setText('1 joueur')
-        self.two_players_button.setText('2 joueurs')
+        self.one_player_button.setText('solo')
+        self.two_players_button.setText('multi-joueurs')
     def setEnglish(self):
         self.home_button.setText("Home")
         self.start_button.setText("Start")
@@ -248,8 +253,8 @@ class ui(object):
         self.info_label.setText("Time left:")
         self.similarity.setText("Similarity")
         self.showmore_button.setText("Landmarks")
-        self.one_player_button.setText('1 player')
-        self.two_players_button.setText('2 players')
+        self.one_player_button.setText('solo')
+        self.two_players_button.setText('multi-players')
     def setChinese(self):
         self.home_button.setText("回到主页")
         self.start_button.setText("开始游戏")

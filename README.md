@@ -1,27 +1,74 @@
-# py_emotateur
+# EMOTATEUR
 
 ## Introduction
 
-We want to create a fun application, in which users can imitate facial expressions of someone and get a note, which allows us to tell us the similarity between model faces and their faces captured in real time.
+<p align="center">
+    <img src="doc/intro.png", width="480">
+</p>
 
-## Steps
+C'est un jeu vis à imiter les expressions faciales d'autre personne et mesurer la similarité entre les expressions faciales d’imitation et de référence.
 
-- Install [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) & [PyOpenPose](https://github.com/FORTH-ModelBasedTracker/PyOpenPose);
-- Activate the application:
+## Page d'accueil
+
+
+<p align="center">
+    <img src="doc/home.gif", width="480">
+</p>
+
+## solo-mode
+
+<p align="center">
+    <img src="doc/one1.gif", width="480">
+    <img src="doc/one2.gif", width="480">
+    <img src="doc/one3.gif", width="480">
+</p>
+
+## multi-joueurs mode
+
+<p align="center">
+    <img src="doc/two1.gif", width="480">
+    <img src="doc/two2.gif", width="480">
+    <img src="doc/two3.gif", width="480">
+</p>
+
+## Exemples des images de référence
+
+<p align="center">
+    <img src="doc/examples.png", width="800">
+</p>
+
+## Comment ça marche
+
+<p align="center">
+    <img src="doc/architecture.png", width="800">
+</p>
+
+## Installation
+
+- Installer [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) & [PyOpenPose](https://github.com/FORTH-ModelBasedTracker/PyOpenPose);
+- Ensuit:
 ```bash
 python3 emotateur.py
 ```
 
+## Architecture du systeme
+
+<p align="center">
+    <img src="doc/files.png", width="600">
+</p>
+
 ## Documents
 
-- [Cahier de charge](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Cahier%20de%20charge.md)
-- [Comment ça marche](https://github.com/ZHANGHeng19931123/py_emotateur/blob/master/doc/Comment%20ça%20marche.md)
+- [Diapositive](https://docs.google.com/presentation/d/1xqt5ODMEjq2VQG5CXfA-deQM4pDEkuEwCQUqi-MEBYk/edit?usp=sharing)
+- [Rapport](https://docs.google.com/document/d/1KEyb6dXMNXon9NAhRNZQWcWrzmU--qV9ne9t6XRb2aE/edit?usp=sharing)
 
 ## Team members
+
+<p align="center">
+    <img src="doc/img.jpg", width="480">
+</p>
 
 - SUN Yunyun
 - XU Sixiang
 - YAN Yutong
 - ZHANG Heng
-
-![](doc/img.jpg) 
