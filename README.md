@@ -10,12 +10,17 @@ C'est un jeu vis à imiter les expressions faciales d'autre personne et mesurer 
 
 ## Page d'accueil
 
+Lorsque vous lancez l’application, il y aura un effet d'animation: les images de référence vont apparaître ou disparaître aléatoirem
+
 
 <p align="center">
     <img src="doc/home.gif", width="480">
 </p>
 
 ## solo-mode
+
+En solo mode, vous avez **une minute** pour imiter les images de référence prédéfini par l’application. 
+Le temps restant sera affiché en haut de la fenêtre. 
 
 <p align="center">
     <img src="doc/one1.gif", width="480">
@@ -25,13 +30,26 @@ C'est un jeu vis à imiter les expressions faciales d'autre personne et mesurer 
 
 ## multi-joueurs mode
 
+En multi-joueurs mode, un joueurs imite les expressions faciales de l'autre.
+
+
 <p align="center">
     <img src="doc/two1.gif", width="480">
     <img src="doc/two2.gif", width="480">
     <img src="doc/two3.gif", width="480">
 </p>
 
+## Deux modes d’affichage
+
+Vou pouvez afficher ou cacher les points clés faciaux en cliquant le bouton “**Points clés**”:
+
+<p align="center">
+    <img src="doc/mode.gif", width="480">
+</p>
+
 ## Exemples des images de référence
+
+ Jusqu'à maintenant, nous avons collectés 20 images de référence. En général, ils sont connu et intéressante à imiter.
 
 <p align="center">
     <img src="doc/examples.png", width="800">
